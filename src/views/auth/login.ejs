@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="shortcut icon" href="/icon/favicon.ico" type="image/x-icon">
+    <title><%= title %></title>
+</head>
+<body>
+    <div class="card login">
+        <% if (locals.message) { %>
+            <div class="task-card message">
+              <%= locals.message %>
+            </div>
+          <% } %>
+        <div class="container">
+            <form class="form" action="/login" method="post">
+                <h1>User Login</h1>
+                <input autocomplete="off" type="text" name="username" id="username" placeholder="Username...">
+                <input autocomplete="off" type="password" name="password" id="password" placeholder="Password...">
+                <button type="submit">Login</button>
+            </form>
+            <p>Belum memiliki akun? <a class="register" href="/register">Register</a></p>
+        </div>
+    </div>
+    <script type="text/javascript" src="/scripts/script.js"></script>
+
+</body>
+</html>

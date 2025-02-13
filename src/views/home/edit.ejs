@@ -1,0 +1,116 @@
+<!-- home/edit.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Task</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        form {
+            width: 100%;
+        }
+
+        .container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"], textarea, input[type="date"] {
+            width: 100%;
+            /*padding: 10px;*/
+            padding: 0.5rem;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center; 
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .date-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .date-container input[type="date"] {
+            flex: 1;
+        }
+
+        .date-container i {
+            font-size: 18px;
+            color: #333;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body style="background-image: url('https://c.wallhere.com/photos/5a/01/Mac_OS_X_OS_X_Big_Sur-1965909.jpg!d'); background-size: cover;">
+    <div class="container">
+        <h1>Edit your task</h1>
+        <form method="post" action="/update-todo/<%= id %>">
+            <label for="judul">Judul</label>
+            <div class="title-container">
+                <input type="text" id="judul" name="judul" placeholder="Judul tugas anda" value="<%= task %>" required>
+            </div>
+
+            <label for="deskripsi">Deskripsi</label>
+            <div class="desc-container">
+                <textarea id="deskripsi" name="deskripsi" placeholder="Deskripsi tugas anda" required><%= description %></textarea>
+            </div>
+
+            <label for="deadline">Deadline</label>
+            <div class="date-container">
+                <input type="date" id="deadline" name="deadline" value="<%= deadline %>" required>
+            </div>
+
+            <button type="submit" class="btn">Update</button>
+        </form>
+    </div>
+</body>
+</html>
+<!-- end of home/edit.ejs -->

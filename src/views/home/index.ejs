@@ -1,0 +1,227 @@
+<!-- home/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanX - Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            font-family: "Inter";
+        }
+        body {
+            font-family: "Inter", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-bar .search {
+            background-color: #ffaa00;
+            color: #ffffff;
+        }
+
+        .search-bar .add-task {
+            background-color: #28a745;
+            color: #f4f4f4;
+        }
+
+        .search-bar .logout {
+            background-color: #dc3545;
+            color: #f4f4f4;
+        }
+        .task-group {
+            margin-bottom: 20px;
+        }
+
+        .task-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-card.message {
+            background: #fcfbaf;
+        }
+
+        .task-card.completed {
+            background: #AFFCEF; /* Green for completed tasks */
+        }
+
+        .task-card.pending {
+            background: #FCAFB0; /* Red for pending tasks */
+        }
+
+        .task-details {
+            flex: 1;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            gap:1rem;
+        }
+
+        .task-actions button {
+            margin-left: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .task-actions button:hover {
+            color: #000;
+        }
+
+        .task-actions button.edit {
+            color: #000;
+        }
+
+        .task-actions button.delete {
+            color: #000;
+        }
+
+        .task-details h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .task-details input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .task-details div {
+    display: block; /* Pastikan elemen berbaris vertikal */
+}
+
+.task-details p {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+        .task-details p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body style="background-image: url('https://wallpapers.com/images/hd/macos-big-sur-lake-dzb1qapwkk8tq18i.jpg'); background-size: cover;">
+    <div class="container">
+        <h1>Welcome to your PlanX</h1>
+        <h2>What’s Next, <%= username %>?</h2>
+
+        <div class="search-bar">
+            <form action="/" method="get">
+                <input type="text" name="q" placeholder="Mau nyari...">
+                <button class="search">Search</button>
+            </form>
+            <a href="/tambah"><button class="add-task">Add Task</button></a>
+            <a href="/logout"><button class="logout">Log out</button></a>
+        </div>
+        <% if (locals.message) { %>
+            <div class="task-card message">
+              <%= locals.message %>
+            </div>
+          <% } %>
+        <% if (data && data.length > 0) { %>
+            <% data.forEach(group => { %>
+                <div class="task-group">
+                    <h2><%= moment(group.deadline).format('dddd, D MMMM YYYY') %></h2>
+                    <% group.tasks.split(', ').forEach((task, index) => { %>
+                        <% const status = group.statuses.split(', ')[index]; %>
+                        <div class="task-card <%= status === 'belum selesai' ? 'pending' : 'completed' %>">
+                            <div class="task-details">
+                                <form action="/update-status/<%= group.id %>" method="POST" style="display: inline;">
+                                    <button 
+                                    style="background: none;
+                                    color: inherit;
+                                    border: none;
+                                    padding: 0;
+                                    margin-left: 0.5rem;
+                                    font-size: larger;
+                                    cursor: pointer;
+                                    outline: inherit;"
+                                        type="submit" 
+                                        name="status"
+                                        value="<%= status %>"
+                                        class="<%= status === 'belum selesai' ? 'fa-regular fa-square' : 'fa-regular fa-square-check' %>"
+                                        >
+                                    </button>
+                                </form>
+                                <div>
+                                    <h3><%= task %></h3>
+                                    <p><%= group.descriptions.split(', ')[index] %></p>
+                                </div>
+                            </div>
+                            
+                            <div class="task-actions" style="display: flex; flex-direction: row;">
+                                <form action="/edit-todo/<%= group.id %>" method="get">
+                                    <button type="submit" class="edit"><i class="fa-regular fa-pen-to-square"></i></button>
+                                </form>
+                                <form action="/delete-todo/<%= group.id %>" method="post">
+                                    <button type="submit" class="delete"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No tasks found.</p>
+        <% } %>
+    </div>
+</body>
+</html>
+<!-- end of home/index.ejs -->
